@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Título da Página</title>
     <link rel="stylesheet" href="estilos/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
 <body>
     <?php 
-        require_once "includes/banco.php"; 
+        require_once "includes/login.php";
+        require_once "includes/banco.php";
         require_once "includes/funcoes.php";
         $ordem = $_GET['o'] ?? "n";
         $chave = $_GET['c'] ?? "";
@@ -60,9 +62,18 @@
                             echo "<tr>
                             <td><img src='$t' class='mini'></td>
                             <td><a href='detalhes.php?cod=$reg->cod'>$reg->nome</a>  [$reg->genero]
-                            <br>$reg->produtora</td>
-                            <td>Admin</td>
-                            </tr>";
+                            <br>$reg->produtora</td>";
+
+                            if (is_admin()) {
+                                echo "<td> 
+                                <span class='material-symbols-outlined'>add_circle</span> 
+                                <span class='material-symbols-outlined'>edit</span>
+                                <span class='material-symbols-outlined'>delete</span> 
+                                </td>";
+                            } elseif (is_editor()) {
+                                echo "<td><span class='material-symbols-outlined'>edit</span></td>";
+                            }
+                            echo "</tr>";
                         }
                     }
                 }

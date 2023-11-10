@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Título da Página</title>
     <link rel="stylesheet" href="estilos/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
 <body>
     <?php 
+        require_once "includes/login.php";
         require_once "includes/banco.php";
         require_once "includes/funcoes.php";
     ?>
@@ -26,28 +28,24 @@
                     if ($busca->num_rows == 1) {
                         $reg = $busca->fetch_object();
                         $t = thumb($reg->capa);
-                        echo "
-                        <tr>
-                            <td rowspan='3'><img src='$t' class='full'></img></td>
-                            <td>
-                                <h2>$reg->nome</h2>
-                                Nota: $reg->nota/10.00
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>$reg->descricao</td>
-                        </tr>
-                        <tr>
-                            <td>Admin</td>
-                        </tr>
-                        ";
+                        echo "<tr><td rowspan='3'><img src='$t' class='full'></img></td>";
+                        echo "<td><h2>$reg->nome</h2>";
+                        echo "Nota: $reg->nota/10.00";
+                        if (is_admin()) {
+                            echo " <span class='material-symbols-outlined'>add_circle</span>";
+                            echo " <span class='material-symbols-outlined'>edit</span>";
+                            echo " <span class='material-symbols-outlined'>delete</span>";
+                        } elseif (is_editor()) {
+                            echo " <span class='material-symbols-outlined'>edit</span>";
+                        }
+                        echo "<tr><td><p>$reg->descricao</p>";
                     } else {
-                        echo "<tr><td>Nenhum registro encontrado</td></tr>";
+                        echo "<p>Jogo não encontrado</p>";
                     }
                 }
             ?>
         </table>
-        <a href="index.php"><img src="icones/icoback.png" alt="botão de voltar"></a>
+        <?php echo voltar() ?>
     </div>
     <?php include_once "rodape.php"?>
 </body>
